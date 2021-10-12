@@ -37,12 +37,15 @@ class Minesweeper
 
     def reveal?
         puts "Do you want to flag or reveal a location?"
-        puts "Reveal? y/n >>"
+        puts "Enter `r` for Reveal or `f` for flag  >>"
         move = gets.chomp 
-        if ["y", "Y", "yes", "Yes", "YES", "reveal"].include?(move)
+        if ["r", "R", "r ", "R ", "reveal", "Reveal"].include?(move)
             return true
+        elsif ["f", "F", "f ", "F ", "flag", "Flag"].include?(move)
+            return false
         else
-            false
+            puts "Please enter `r` or `f` only"
+            reveal?
         end
     end
 
