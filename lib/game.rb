@@ -20,7 +20,7 @@ class Minesweeper
     end
 
     def get_move
-        puts "Please enter the location you want to reveal by row & column (e.g., `3,4`) >>"
+        puts "Please enter the location you want to flag or reveal by row & column (e.g., `3,4`) >>"
         move = gets.chomp 
         move = parse_move(move)
         if valid_move?(move)
@@ -28,6 +28,17 @@ class Minesweeper
         else 
             puts "Please enter a location on the board, separated by a comma"
             get_move
+        end
+    end
+
+    def reveal?
+        puts "Do you want to flag or reveal a location?"
+        puts "Reveal? y/n >>"
+        move = gets.chomp 
+        if ["y", "Y", "yes", "Yes", "YES", "reveal"].include?(move)
+            return true
+        else
+            false
         end
     end
 
@@ -44,7 +55,11 @@ class Minesweeper
     def take_turn
         @board.render
         move = self.get_move
-        @board.reveal(move)
+        if self.reveal? 
+            @board.reveal(move)
+        else
+            @board.flag(move)
+        end
         @board.render
     end
 

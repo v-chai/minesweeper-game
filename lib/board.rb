@@ -28,6 +28,10 @@ class Board
         @grid[x][y] = val
     end
 
+    def flag(pos)
+        self[pos].flag
+    end
+
     def reveal(pos)
         tile = self[pos]
         if tile.bomb
@@ -51,7 +55,7 @@ class Board
         rows = [x-1, x, x+1]
         cols = [y-1, y, y+1]
         neighbors = rows.product(cols)
-        neighbors.select! {|pos| valid_coords(pos) && !@grid[pos].revealed }
+        neighbors.select! {|pos| valid_coords(pos) && !self[pos].revealed }
     end
 
     def valid_coords(pos)
@@ -62,7 +66,7 @@ class Board
     def check_nearby(pos)
         bombs = 0
         get_neighbors(pos).each do |neighbor|
-            if @grid[neighbor].bomb 
+            if self[neighbor].bomb 
                 bomb += 1
             else
                 check_nearby(neighbor)
