@@ -38,13 +38,7 @@ class Board
             tile.face = "%"
             tile.revealed = true
         else
-            if check_nearby(pos) > 0
-                tile.face = check_nearby(pos).to_s
-                tile.revealed = true
-            else
-                tile.face = "_"
-                tile.revealed = true
-            end
+            check_nearby(pos)
         end
         
     end
@@ -55,23 +49,28 @@ class Board
         rows = [x-1, x, x+1]
         cols = [y-1, y, y+1]
         neighbors = rows.product(cols)
-        neighbors.select! {|pos| valid_coords(pos) && !self[pos].revealed }
+        neighbors.select {|pos| valid_coords(pos) && !self[pos].revealed }
+    end
+
+    def neighbor_bombs(pos)
+        get_neighbors(pos).count { |neighbor| self[neighbor].bomb }
     end
 
     def valid_coords(pos)
         (0..8).to_a.include?(pos[0]) && 
-        (0..8).to_a.include?(pos[0])
+        (0..8).to_a.include?(pos[1])
     end
 
     def check_nearby(pos)
-        bombs = 0
-        get_neighbors(pos).each do |neighbor|
-            if self[neighbor].bomb 
-                bomb += 1
+        get_neighbors(pos).each do |neighbor| 
+            bombs = neighbor_bombs(neighbor)
+            if bombs > 0 
+                self[neighbor].face = bombs.to_s
             else
+                self[neighbor].face = "_"
+                self[neighbor].revealed = true
                 check_nearby(neighbor)
             end
         end
-        bombs
     end
 end
