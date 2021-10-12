@@ -11,6 +11,9 @@ class Minesweeper
 
 
     def play
+        system("clear")
+        puts "Minesweeper -- Don't hit a mine!"
+        @board.render
         self.take_turn until self.lose || self.win
         if win 
             puts "Congratulations! You win!"
@@ -20,6 +23,7 @@ class Minesweeper
     end
 
     def get_move
+        
         puts "Please enter the location you want to flag or reveal by row & column (e.g., `3,4`) >>"
         move = gets.chomp 
         move = parse_move(move)
@@ -53,13 +57,14 @@ class Minesweeper
     end
 
     def take_turn
-        @board.render
+
         move = self.get_move
         if self.reveal? 
             @board.reveal(move)
         else
             @board.flag(move)
         end
+        system("clear")
         @board.render
     end
 
