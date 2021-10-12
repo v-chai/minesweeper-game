@@ -3,6 +3,8 @@ require_relative "tile"
 require "byebug"
 
 class Board
+    attr_reader :grid
+
     def initialize(size = 9)
         @size = size
         @grid = Array.new(@size) {Array.new(@size) { Tile.new } }
